@@ -27,4 +27,18 @@ body {
   background: #ffffff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* Korean text: prevent mid-syllable breaks on all text elements */
+h1, h2, h3, h4, h5, h6, p, li, span, button, a, label, dt, dd {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* Long URLs and codes may break anywhere */
+a[href] {
+  overflow-wrap: break-word;
+  word-break: break-word;
 }

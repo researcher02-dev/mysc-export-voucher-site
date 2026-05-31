@@ -20,101 +20,99 @@ function parseNumber(val: string): number {
   return isNaN(n) ? 0 : n
 }
 
-/** Minimal CSV parser: handles quoted fields with commas and newlines */
-function parseCSVLine(line: string): string[] {
-  const result: string[] = []
-  let current = ''
-  let inQuotes = false
+/**
+ * Full RFC-4180 CSV parser.
+ * Correctly handles quoted fields that contain commas, newlines, or escaped quotes ("").
+ * Splits on \n only when outside of a quoted field.
+ */
+function parseCSV(text: string): Service[] {
+  const src = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
 
-  for (let i = 0; i < line.length; i++) {
-    const ch = line[i]
-    if (ch === '"') {
-      if (inQuotes && line[i + 1] === '"') {
-        current += '"'
-        i++
+  // Parse into rows of fields character-by-character
+  const rows: string[][] = []
+  let row: string[] = []
+  let field = ''
+  let inQ = false
+
+  for (let i = 0; i < src.length; i++) {
+    const ch = src[i]
+    if (inQ) {
+      if (ch === '"') {
+        if (src[i + 1] === '"') { field += '"'; i++ }  // escaped quote
+        else inQ = false                                // closing quote
       } else {
-        inQuotes = !inQuotes
+        field += ch  // newlines inside quotes are preserved
       }
-    } else if (ch === ',' && !inQuotes) {
-      result.push(current)
-      current = ''
     } else {
-      current += ch
+      if (ch === '"') {
+        inQ = true
+      } else if (ch === ',') {
+        row.push(field); field = ''
+      } else if (ch === '\n') {
+        row.push(field); field = ''
+        rows.push(row); row = []
+      } else {
+        field += ch
+      }
     }
   }
-  result.push(current)
-  return result
-}
+  // flush last field/row
+  row.push(field)
+  if (row.some(f => f.trim())) rows.push(row)
 
-function parseCSV(text: string): Service[] {
-  const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n')
-  if (lines.length < 2) return []
+  if (rows.length < 2) return []
 
-  const headers = parseCSVLine(lines[0])
-
+  const headers = rows[0].map(h => h.trim())
   const services: Service[] = []
 
-  for (let i = 1; i < lines.length; i++) {
-    const line = lines[i].trim()
-    if (!line) continue
+  for (let i = 1; i < rows.length; i++) {
+    const vals = rows[i]
+    const r: Record<string, string> = {}
+    headers.forEach((h, idx) => { r[h] = (vals[idx] ?? '').trim() })
 
-    const values = parseCSVLine(line)
-    const row: Record<string, string> = {}
-    headers.forEach((h, idx) => {
-      row[h.trim()] = (values[idx] ?? '').trim()
-    })
+    // Skip rows with no service identity
+    if (!r.service_id && !r.service_name) continue
 
-    const highlightOrder = parseNumber(row.highlight_order)
-    const sortOrder = parseNumber(row.sort_order)
+    const sortOrder      = parseNumber(r.sort_order)
+    const highlightOrder = parseNumber(r.highlight_order)
 
     services.push({
-      service_id: row.service_id ?? '',
-      service_name: row.service_name ?? '',
-      countries: parseArray(row.countries ?? ''),
-      support_types: parseArray(row.support_types ?? ''),
-      summary: row.summary ?? '',
-      keyword_tags: parseArray(row.keyword_tags ?? ''),
-      application_url: row.application_url ?? '',
-      is_visible: parseBool(row.is_visible ?? ''),
-      sort_order: sortOrder,
-      detail_intro: row.detail_intro ?? '',
-      detail_process: row.detail_process ?? '',
-      detail_composition: row.detail_composition ?? '',
-      is_highlighted: parseBool(row.is_highlighted ?? ''),
-      highlight_order: highlightOrder || sortOrder,
-      highlight_title: row.highlight_title ?? '',
-      highlight_subtitle: row.highlight_subtitle ?? '',
-      highlight_summary: row.highlight_summary ?? '',
-      highlight_image_url: row.highlight_image_url ?? '',
-      highlight_cta_label: row.highlight_cta_label ?? '',
-      highlight_period: row.highlight_period ?? '',
+      service_id:          r.service_id        ?? '',
+      service_name:        r.service_name       ?? '',
+      countries:           parseArray(r.countries      ?? ''),
+      support_types:       parseArray(r.support_types  ?? ''),
+      summary:             r.summary            ?? '',
+      keyword_tags:        parseArray(r.keyword_tags   ?? ''),
+      application_url:     r.application_url    ?? '',
+      is_visible:          parseBool(r.is_visible      ?? ''),
+      sort_order:          sortOrder,
+      detail_intro:        r.detail_intro        ?? '',
+      detail_process:      r.detail_process      ?? '',
+      detail_composition:  r.detail_composition  ?? '',
+      is_highlighted:      parseBool(r.is_highlighted  ?? ''),
+      highlight_order:     highlightOrder || sortOrder,
+      highlight_title:     r.highlight_title     ?? '',
+      highlight_subtitle:  r.highlight_subtitle  ?? '',
+      highlight_summary:   r.highlight_summary   ?? '',
+      highlight_image_url: r.highlight_image_url ?? '',
+      highlight_cta_label: r.highlight_cta_label ?? '',
+      highlight_period:    r.highlight_period    ?? '',
     })
   }
 
   return services
 }
 
-let cached: Service[] | null = null
-let cacheTime = 0
-const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
-
 export async function fetchServices(): Promise<Service[]> {
-  const now = Date.now()
-  if (cached && now - cacheTime < CACHE_TTL) return cached
-
   try {
     const res = await fetch(CSV_URL, {
       next: { revalidate: 300 },
     })
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const text = await res.text()
-    const services = parseCSV(text)
-    cached = services
-    cacheTime = now
-    return services
+    return parseCSV(text)
   } catch (err) {
     console.error('Failed to fetch services CSV:', err)
-    if (cached) return cached
     return []
   }
 }
