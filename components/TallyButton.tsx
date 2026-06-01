@@ -14,7 +14,10 @@ export default function TallyButton({
   className = '',
 }: TallyButtonProps) {
   return (
-    <button onClick={() => openTallyGeneral(sourcePage)} className={className}>
+    <button
+      onClick={() => openTallyGeneral(sourcePage)}
+      className={`cursor-pointer ${className}`}
+    >
       {label}
     </button>
   )
