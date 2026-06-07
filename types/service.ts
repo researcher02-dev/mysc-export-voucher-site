@@ -19,4 +19,6 @@ export interface Service {
   highlight_image_url: string
   highlight_cta_label: string
   highlight_period: string
+  industry_tags: string[]
+  official_category: string
 }

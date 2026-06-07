@@ -97,6 +97,8 @@ function parseCSV(text: string): Service[] {
       highlight_image_url: r.highlight_image_url ?? '',
       highlight_cta_label: r.highlight_cta_label ?? '',
       highlight_period:    r.highlight_period    ?? '',
+      industry_tags:       parseArray(r.industry_tags   ?? ''),
+      official_category:   r.official_category   ?? '',
     })
   }
 

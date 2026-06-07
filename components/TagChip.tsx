@@ -1,8 +1,9 @@
 interface TagChipProps {
   label: string
   /** 'country' = grey pill (light bg), 'support' = cyan pill (light bg),
-   *  'dark-country' = white/10 pill (on navy header), 'dark-support' = cyan/20 pill (on navy header) */
-  variant?: 'country' | 'support' | 'dark-country' | 'dark-support'
+   *  'dark-country' = white/10 pill (on navy header), 'dark-support' = cyan/20 pill (on navy header),
+   *  'dark-category' = amber/orange pill (on navy header) */
+  variant?: 'country' | 'support' | 'dark-country' | 'dark-support' | 'dark-category'
   className?: string
 }
 
@@ -19,6 +20,7 @@ export default function TagChip({
     support: 'bg-[#33c3ff] text-white font-medium',
     'dark-country': 'bg-white/10 text-[#cad5e2] font-bold',
     'dark-support': 'bg-[rgba(51,195,255,0.2)] text-[#33c3ff] font-medium',
+    'dark-category': 'bg-[rgba(255,180,50,0.2)] text-[#ffb432] font-medium',
   }
 
   return (

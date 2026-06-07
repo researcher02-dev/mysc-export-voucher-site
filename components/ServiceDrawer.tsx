@@ -11,10 +11,43 @@ interface ServiceDrawerProps {
   onClose: () => void
 }
 
-const DETAIL_SECTIONS = [
+/**
+ * detail_composition 텍스트를 파싱해 Basic / Upgrade / Expert 섹션으로 분리.
+ * ### 헤더가 없으면 단일 섹션으로 반환.
+ */
+function parseComposition(text: string): { title: string; content: string }[] {
+  if (!text.trim()) return []
+
+  const HEADER_RE = /^###\s+(.+)$/m
+  if (!HEADER_RE.test(text)) {
+    return [{ title: 'BASIC 구성', content: text.trim() }]
+  }
+
+  const lines = text.split('\n')
+  const sections: { title: string; content: string }[] = []
+  let current: { title: string; lines: string[] } | null = null
+
+  for (const line of lines) {
+    const match = line.match(/^###\s+(.+)$/)
+    if (match) {
+      if (current) {
+        sections.push({ title: current.title, content: current.lines.join('\n').trim() })
+      }
+      current = { title: match[1].trim(), lines: [] }
+    } else {
+      current?.lines.push(line)
+    }
+  }
+  if (current) {
+    sections.push({ title: current.title, content: current.lines.join('\n').trim() })
+  }
+
+  return sections.filter((s) => s.content)
+}
+
+const STATIC_SECTIONS = [
   { title: '서비스 소개', field: 'detail_intro' as const },
   { title: '진행 방식', field: 'detail_process' as const },
-  { title: 'BASIC 구성', field: 'detail_composition' as const },
 ]
 
 export default function ServiceDrawer({ service, onClose }: ServiceDrawerProps) {
@@ -22,7 +55,6 @@ export default function ServiceDrawer({ service, onClose }: ServiceDrawerProps) 
   const drawerRef = useRef<HTMLDivElement>(null)
   const closeBtnRef = useRef<HTMLButtonElement>(null)
 
-  // ESC key to close
   useEffect(() => {
     if (!isOpen) return
     const handleKey = (e: KeyboardEvent) => {
@@ -32,7 +64,6 @@ export default function ServiceDrawer({ service, onClose }: ServiceDrawerProps) 
     return () => document.removeEventListener('keydown', handleKey)
   }, [isOpen, onClose])
 
-  // Body scroll lock
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -44,14 +75,12 @@ export default function ServiceDrawer({ service, onClose }: ServiceDrawerProps) 
     }
   }, [isOpen])
 
-  // Move focus to close button when drawer opens
   useEffect(() => {
     if (isOpen) {
       closeBtnRef.current?.focus()
     }
   }, [isOpen])
 
-  // Focus trap: keep Tab/Shift+Tab inside drawer
   useEffect(() => {
     if (!isOpen) return
     const drawer = drawerRef.current
@@ -83,6 +112,7 @@ export default function ServiceDrawer({ service, onClose }: ServiceDrawerProps) 
   if (!service) return null
 
   const hasUrl = Boolean(service.application_url)
+  const compositionSections = parseComposition(service.detail_composition)
 
   return (
     <>
@@ -115,25 +145,17 @@ export default function ServiceDrawer({ service, onClose }: ServiceDrawerProps) 
                 aria-label="닫기"
                 className="shrink-0 mt-0.5 w-8 h-8 flex items-center justify-center rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors"
               >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M15 5L5 15M5 5l10 10"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 </svg>
               </button>
             </div>
 
             {/* Tags row */}
             <div className="flex flex-wrap gap-1.5 pb-4">
+              {service.official_category && (
+                <TagChip label={service.official_category} variant="dark-category" />
+              )}
               {service.countries.map((c) => (
                 <TagChip key={c} label={c} variant="dark-country" />
               ))}
@@ -164,7 +186,7 @@ export default function ServiceDrawer({ service, onClose }: ServiceDrawerProps) 
 
           {/* Detail sections */}
           <div className="flex flex-col divide-y divide-[#e8eef5]">
-            {DETAIL_SECTIONS.map(({ title, field }) => {
+            {STATIC_SECTIONS.map(({ title, field }) => {
               const content = service[field]
               if (!content) return null
               return (
@@ -178,12 +200,23 @@ export default function ServiceDrawer({ service, onClose }: ServiceDrawerProps) 
                 </div>
               )
             })}
+
+            {/* Composition sections (Basic only or Basic/Upgrade/Expert) */}
+            {compositionSections.map(({ title, content }) => (
+              <div key={title} className="py-6 flex flex-col gap-3">
+                <h4 className="text-[14px] font-bold text-[#33c3ff] tracking-[1.4px] uppercase">
+                  {title}
+                </h4>
+                <p className="text-[14px] font-medium text-[#314158] leading-[1.625] whitespace-pre-line">
+                  {content}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* ── Footer ─────────────────────────────────────────── */}
         <div className="flex-none bg-[#f8f9fb] border-t border-[#e8eef5] px-8 py-6 flex flex-col gap-3">
-          {/* Primary: 신청 페이지 바로가기 */}
           {hasUrl ? (
             <a
               href={service.application_url}
@@ -202,7 +235,6 @@ export default function ServiceDrawer({ service, onClose }: ServiceDrawerProps) 
             </span>
           )}
 
-          {/* Secondary: 상담 문의하기 */}
           <button
             onClick={() => openTallyFromDrawer(service)}
             className="w-full h-[54px] flex items-center justify-center rounded-full border border-[#0b1b35] text-[#0b1b35] text-[16px] font-medium cursor-pointer hover:bg-[#0b1b35]/5 transition-colors"

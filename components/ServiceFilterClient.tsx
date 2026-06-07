@@ -173,10 +173,16 @@ export default function ServiceFilterClient({
                 )}
               </div>
 
-              {/* Hidden for MVP */}
-              <span aria-hidden="true" className="hidden">
-                전체 메뉴판 보기
-              </span>
+              <a
+                href="/diagnosis"
+                className="cursor-pointer h-10 px-6 rounded-full bg-[#0b1b35] text-white text-[14px] font-bold flex items-center gap-2 hover:bg-[#162d52] transition-colors whitespace-nowrap"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Z" fill="currentColor"/>
+                  <path d="M8 4.5a.75.75 0 0 1 .75.75v3.69l2.28 2.28a.75.75 0 1 1-1.06 1.06L7.47 9.78A.75.75 0 0 1 7.25 9V5.25A.75.75 0 0 1 8 4.5Z" fill="currentColor"/>
+                </svg>
+                내 메뉴 찾기
+              </a>
             </div>
           </div>
         </div>
