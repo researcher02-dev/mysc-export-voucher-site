@@ -141,10 +141,12 @@ export default function DiagnosisClient({ services }: Props) {
   }
 
   function handleQ2(value: string) {
-    setAnswers((a) => ({ ...a, q2: value }))
     if (value === '국가미정') {
-      setStep('q4') // Q3 건너뜀
+      // Q3를 건너뛰므로 이전에 입력된 q3 답변을 반드시 초기화
+      setAnswers((a) => ({ ...a, q2: value, q3: undefined }))
+      setStep('q4')
     } else {
+      setAnswers((a) => ({ ...a, q2: value }))
       setStep('q3')
     }
   }
