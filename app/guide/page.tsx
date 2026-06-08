@@ -152,7 +152,7 @@ export default function GuidePage() {
             <Prose>
               정부가 수출을 준비하는 기업에게 <strong>바우처(이용권)</strong>를 발급하면,
               기업이 그 바우처로 공식 서비스 메뉴판에서 필요한 서비스를 골라 쓰는 방식입니다.
-              전시회 참가, 시장조사, 해외영업 지원, 번역·인증·특허 등 14개 분야 중 원하는 서비스를
+              전시회 참가, 시장조사, 해외영업 지원, 번역·인증·특허 등 15개 분야 중 원하는 서비스를
               자유롭게 선택할 수 있습니다.
             </Prose>
 
@@ -189,67 +189,85 @@ export default function GuidePage() {
             <div className="mt-8">
               <p className="text-[14px] font-bold text-[#0b1b35] mb-4">바우처 자금은 어떻게 구성되나요?</p>
               <div className="bg-[#0b1b35] rounded-2xl p-6 sm:p-8">
-                {/* 상단: 정부 → 운영기관 분기 */}
-                <div className="flex flex-col items-center gap-2 mb-6">
-                  <div className="bg-white/10 border border-white/20 rounded-xl px-6 py-3 text-center">
-                    <p className="text-[12px] text-[#33c3ff] font-bold tracking-[1px] uppercase mb-1">정부 수출지원 예산</p>
-                    <p className="text-white text-[14px] font-bold">중기부 · 산업부 · 지자체 등</p>
-                    <p className="text-[#cad5e2] text-[12px] mt-1">부처별로 예산 편성 → 사업 설계·공고</p>
+
+                {/* 레이어 1: 정부 예산 */}
+                <div className="flex justify-center mb-4">
+                  <div className="bg-[#33c3ff]/15 border border-[#33c3ff]/40 rounded-xl px-8 py-4 text-center w-full max-w-[500px]">
+                    <p className="text-[11px] text-[#33c3ff] font-bold tracking-[1px] uppercase mb-1">정부 수출지원 예산</p>
+                    <p className="text-white text-[15px] font-bold">중기부 · 산업부 · 지자체 등 예산 편성</p>
+                    <p className="text-[#cad5e2] text-[12px] mt-1">부처 및 지역별로 사업 설계 · 공고</p>
                   </div>
-                  <div className="text-[#33c3ff] text-[20px]">↓</div>
-                  <div className="grid grid-cols-2 gap-3 w-full max-w-[500px]">
-                    <div className="bg-white/10 border border-white/20 rounded-xl p-4 text-center">
-                      <p className="text-[11px] text-[#33c3ff] font-bold mb-1">중기부 트랙</p>
-                      <p className="text-white text-[13px] font-medium">운영기관: 중진공</p>
-                      <p className="text-[#cad5e2] text-[12px] mt-1">기준: 수출실적 구간</p>
-                    </div>
-                    <div className="bg-white/10 border border-white/20 rounded-xl p-4 text-center">
-                      <p className="text-[11px] text-[#33c3ff] font-bold mb-1">산업부/KOTRA 트랙</p>
-                      <p className="text-white text-[13px] font-medium">운영기관: KOTRA</p>
-                      <p className="text-[#cad5e2] text-[12px] mt-1">기준: 업종 + 매출액 구간</p>
-                    </div>
-                  </div>
-                  <div className="text-[#33c3ff] text-[20px]">↓</div>
+                </div>
+                <div className="flex justify-center mb-4">
+                  <span className="text-[#33c3ff] text-[22px]">↓</span>
                 </div>
 
-                {/* 바우처 구성 */}
-                <div className="bg-white/5 border border-white/10 rounded-xl p-5 mb-6">
-                  <p className="text-[13px] font-bold text-[#33c3ff] mb-3 text-center">바우처 구성 (중소기업 기준)</p>
-                  <div className="flex gap-2 items-stretch">
-                    <div className="flex-[7] bg-[#33c3ff]/20 border border-[#33c3ff]/30 rounded-lg p-3 text-center">
-                      <p className="text-[12px] text-[#33c3ff] font-bold">국고보조금 70%</p>
-                      <p className="text-[11px] text-[#cad5e2] mt-1">정부 지원</p>
+                {/* 레이어 2: 2개 트랙 */}
+                <div className="grid grid-cols-2 gap-3 mb-4 max-w-[460px] mx-auto w-full">
+                  {[
+                    { track: '중기부 트랙', org: '운영: 중진공', sub: '수출실적 구간별 5단계' },
+                    { track: '산업부/KOTRA 트랙', org: '운영: KOTRA', sub: '업종·분야별 세부 사업' },
+                  ].map(({ track, org, sub }) => (
+                    <div key={track} className="bg-white/10 border border-white/20 rounded-xl p-4 text-center">
+                      <p className="text-[12px] text-[#33c3ff] font-bold mb-2">{track}</p>
+                      <p className="text-white text-[12px] font-medium">{org}</p>
+                      <p className="text-[#cad5e2] text-[11px] mt-1 leading-[1.5]">{sub}</p>
                     </div>
-                    <div className="flex-[3] bg-white/10 border border-white/20 rounded-lg p-3 text-center">
-                      <p className="text-[12px] text-white font-bold">기업 30%</p>
+                  ))}
+                </div>
+                {/* 트랙 설명 */}
+                <div className="bg-white/5 border border-white/10 rounded-xl px-5 py-3 mb-4 max-w-[460px] mx-auto w-full">
+                  <p className="text-[11px] text-[#cad5e2] leading-[1.7] text-center">
+                    <span className="text-white font-bold">트랙</span>은 신청 자격 요건과 운영기관이 달라지는 구분입니다.
+                    <br />어느 트랙이든 <span className="text-[#33c3ff] font-bold">서비스 메뉴판은 동일하게 이용 가능</span>합니다.
+                  </p>
+                </div>
+                <div className="flex justify-center mb-4">
+                  <span className="text-[#33c3ff] text-[22px]">↓</span>
+                </div>
+
+                {/* 레이어 3: 바우처 구성 */}
+                <div className="bg-white/5 border border-white/10 rounded-xl p-5 mb-4">
+                  <p className="text-[12px] font-bold text-[#33c3ff] mb-3 text-center">바우처 구성 (기업 규모별 차등)</p>
+                  <div className="flex gap-2 items-stretch">
+                    <div className="flex-[65] bg-[#33c3ff]/20 border border-[#33c3ff]/30 rounded-lg p-3 text-center">
+                      <p className="text-[13px] text-[#33c3ff] font-bold">정부 지원 50~70%</p>
+                      <p className="text-[11px] text-[#cad5e2] mt-1">국고보조금</p>
+                    </div>
+                    <div className="flex-[35] bg-white/10 border border-white/20 rounded-lg p-3 text-center">
+                      <p className="text-[13px] text-white font-bold">기업 30~50%</p>
                       <p className="text-[11px] text-[#cad5e2] mt-1">자부담</p>
                     </div>
                   </div>
-                  <p className="text-[12px] text-[#99a1af] text-center mt-3">중견기업은 국고 50% / 자부담 50%</p>
+                  <p className="text-[11px] text-[#99a1af] text-center mt-3">중소기업 최대 70% 지원 / 중견기업 50% 지원</p>
+                </div>
+                <div className="flex justify-center mb-4">
+                  <span className="text-[#33c3ff] text-[22px]">↓</span>
                 </div>
 
-                {/* 하단 흐름 */}
+                {/* 레이어 4: 이용 흐름 */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
                   {([
-                    { label: '참여기업', sub1: '분담금 납부 후', sub2: '바우처 수령' },
+                    { label: '참여기업', sub1: '분담금 납부', sub2: '바우처 수령' },
                     { arrow: true },
-                    { label: '메뉴판', sub1: '14개 분야 중', sub2: '서비스 선택' },
+                    { label: '메뉴판', sub1: '15개 분야 중', sub2: '서비스 선택' },
                     { arrow: true },
-                    { label: '수행기관', sub1: '서비스 제공', sub2: '(부가세 10% 기업부담)' },
+                    { label: '수행기관', sub1: '서비스 제공', sub2: '(부가세 10% 기업 납부)' },
                     { arrow: true },
                     { label: '운영기관', sub1: '검토 후', sub2: '대금 지급' },
                   ] as Array<{ arrow: true } | { label: string; sub1: string; sub2: string }>).map((item, i) =>
                     'arrow' in item ? (
                       <span key={i} className="text-[#33c3ff] text-[18px] hidden sm:block">→</span>
                     ) : (
-                      <div key={i} className="bg-white/10 border border-white/20 rounded-xl px-4 py-3 min-w-[100px]">
+                      <div key={i} className="bg-white/10 border border-white/20 rounded-xl px-3 py-3 min-w-[90px]">
                         <p className="text-white text-[13px] font-bold">{item.label}</p>
-                        <p className="text-[#cad5e2] text-[11px] mt-1 leading-[1.5]">{item.sub1}</p>
-                        <p className="text-[#cad5e2] text-[11px] leading-[1.5]">{item.sub2}</p>
+                        <p className="text-[#cad5e2] text-[10px] mt-1 leading-[1.5]">{item.sub1}</p>
+                        <p className="text-[#cad5e2] text-[10px] leading-[1.5]">{item.sub2}</p>
                       </div>
                     )
                   )}
                 </div>
+
               </div>
             </div>
 
@@ -273,7 +291,6 @@ export default function GuidePage() {
                 ))}
               </div>
             </div>
-
             <InfoBox>
               📌 이 페이지는 수출바우처 공고에서 공통적으로 확인되는 기준을 바탕으로 작성되었습니다.
               <br />
@@ -295,29 +312,24 @@ export default function GuidePage() {
               {[
                 {
                   title: '중기부 트랙',
-                  badge: '기준: 수출실적 구간',
-                  badgeColor: 'bg-[#dbeafe] text-[#1e40af]',
                   items: [
-                    '「중소기업기본법」상 중소기업',
-                    '수출실적 구간에 따라 신청 가능 트랙 상이',
-                    '수출실적 1,000불 미만(내수기업) 구간도 일부 공고 포함',
+                    '「중소기업기본법」상 중소기업 대상',
+                    '전년도 수출실적 기준으로 내수·초보·유망·성장·강소 단계 구분',
+                    '단계별 바우처 한도 및 자부담률 상이',
                   ],
                 },
                 {
                   title: '산업부/KOTRA 트랙',
-                  badge: '기준: 업종 + 매출액',
-                  badgeColor: 'bg-[#d1fae5] text-[#065f46]',
                   items: [
-                    '수출 중소·중견기업 대상',
-                    '소부장·그린·소비재·서비스 등 업종별 트랙 구분',
-                    '수출실적은 평가 항목으로 반영 (신청 자격 제한 아님)',
+                    '산업 글로벌 진출역량 강화사업 및 중견기업 글로벌 지원사업 등 운영',
+                    '소재·부품·장비, 그린, 소비재, 서비스 분야 기업 및 중견기업 등 대상',
+                    '지원요건과 한도는 세부 사업·분야별로 상이',
                   ],
                 },
-              ].map(({ title, badge, badgeColor, items }) => (
+              ].map(({ title, items }) => (
                 <div key={title} className="bg-[#f8f9fb] rounded-xl p-5">
-                  <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+                  <div className="mb-3">
                     <p className="text-[15px] font-bold text-[#0b1b35]">{title}</p>
-                    <span className={`text-[11px] font-bold px-2 py-1 rounded-full ${badgeColor}`}>{badge}</span>
                   </div>
                   <ul className="flex flex-col gap-2">
                     {items.map((item) => (
@@ -575,7 +587,7 @@ export default function GuidePage() {
                 },
                 {
                   q: '정산은 어떻게 진행되나요?',
-                  a: '서비스가 완료되면 수행기관이 운영기관에 정산을 신청합니다. 기업은 만족도 조사를 등록하면 절차가 진행되고, 운영기관 검토 후 수행기관에 대금이 지급됩니다. 부가세(10%)는 바우처로 지원되지 않아 기업이 수행기관에 별도로 납부해야 합니다. 서비스 완료 후 1개월 이내 정산 신청이 이루어져야 하며, 기간을 넘기면 거절될 수 있습니다.',
+                  a: '서비스 완료 후 수행기관이 결과보고서와 정산서류를 제출하면, 운영기관의 검토 및 승인 절차를 거쳐 정산이 진행됩니다. 부가세(10%)는 바우처로 지원되지 않아 기업이 수행기관에 별도로 납부해야 합니다. 세부 기한과 제출 서류는 해당 사업의 정산가이드를 확인해주세요.',
                 },
               ].map(({ q, a }) => (
                 <details key={q} className="group border border-[#e8eef5] rounded-xl overflow-hidden">

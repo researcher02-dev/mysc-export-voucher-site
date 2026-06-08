@@ -44,7 +44,7 @@ function StepCard({ step }: { step: (typeof STEPS)[number] }) {
       >
         {step.detail && (
           <p
-            className={`text-[16px] font-bold leading-[1.75] tracking-[-0.5px] whitespace-pre-line ${
+            className={`text-[18px] font-bold leading-[1.75] tracking-[-0.5px] whitespace-pre-line ${
               step.highlight ? 'text-white/90' : 'text-[#314158]'
             }`}
           >
@@ -53,7 +53,7 @@ function StepCard({ step }: { step: (typeof STEPS)[number] }) {
         )}
         {step.sub && (
           <p
-            className={`text-[18px] font-bold tracking-[-0.5px] leading-[1.75] ${
+            className={`text-[14px] font-bold tracking-[-0.5px] leading-[1.5] ${
               step.highlight ? 'text-white' : 'text-[#314158]'
             }`}
           >
@@ -62,7 +62,7 @@ function StepCard({ step }: { step: (typeof STEPS)[number] }) {
         )}
         {step.note && (
           <p
-            className={`text-[18px] font-bold tracking-[-0.5px] ${
+            className={`text-[14px] font-bold tracking-[-0.5px] ${
               step.highlight ? 'text-[#0b1b35]' : 'text-[#314158]'
             }`}
           >
