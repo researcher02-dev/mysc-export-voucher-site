@@ -36,15 +36,15 @@ const STEPS = [
 function StepCard({ step }: { step: (typeof STEPS)[number] }) {
   return (
     <div className="flex flex-col items-center gap-5">
-      {/* Card */}
+      {/* Card — fixed size for visual consistency */}
       <div
-        className={`w-full max-w-[256px] rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[176px] shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)] ${
+        className={`w-[256px] h-[196px] rounded-2xl p-8 flex flex-col items-center justify-center text-center shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)] ${
           step.highlight ? 'bg-[#33c3ff]' : 'bg-white'
         }`}
       >
         {step.detail && (
           <p
-            className={`text-[16px] font-bold leading-[1.875] tracking-[-0.5px] whitespace-pre-line ${
+            className={`text-[16px] font-bold leading-[1.75] tracking-[-0.5px] whitespace-pre-line ${
               step.highlight ? 'text-white/90' : 'text-[#314158]'
             }`}
           >
@@ -53,7 +53,7 @@ function StepCard({ step }: { step: (typeof STEPS)[number] }) {
         )}
         {step.sub && (
           <p
-            className={`text-[20px] font-bold tracking-[-0.5px] leading-[1.875] ${
+            className={`text-[18px] font-bold tracking-[-0.5px] leading-[1.75] ${
               step.highlight ? 'text-white' : 'text-[#314158]'
             }`}
           >
@@ -62,7 +62,7 @@ function StepCard({ step }: { step: (typeof STEPS)[number] }) {
         )}
         {step.note && (
           <p
-            className={`text-[20px] font-bold tracking-[-0.5px] ${
+            className={`text-[18px] font-bold tracking-[-0.5px] ${
               step.highlight ? 'text-[#0b1b35]' : 'text-[#314158]'
             }`}
           >
@@ -97,7 +97,7 @@ export default function ProcessSection() {
           <h2 className="text-[36px] sm:text-[48px] font-black text-[#0b1b35] leading-[1.25] tracking-[-2.4px]">
             먼저 <span className="text-[#33c3ff]">수출바우처</span>
             <br />
-            수요기업으로 선정 되어야 합니다.
+            수요기업으로 선정되어야 합니다.
           </h2>
         </div>
 

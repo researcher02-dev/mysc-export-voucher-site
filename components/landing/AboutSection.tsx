@@ -10,7 +10,6 @@ export default function AboutSection() {
 
           {/* Left: 수출바우처란? */}
           <div className="bg-white rounded-2xl p-12 flex flex-col gap-5 shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)]">
-            {/* Badge tile */}
             <div className="w-fit rounded-xl px-6 h-20 flex items-center shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)]">
               <Image
                 src="/images/export-voucher-logo.png"
@@ -32,7 +31,6 @@ export default function AboutSection() {
 
           {/* Right: MYSC 소개 */}
           <div className="bg-white rounded-2xl p-12 flex flex-col gap-5 shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)]">
-            {/* MYSC logo tile */}
             <div className="w-fit rounded-xl px-8 h-20 flex items-center shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)]">
               <Image
                 src="/images/mysc-logo-dark.png"
@@ -59,6 +57,17 @@ export default function AboutSection() {
               아시아 전역의 현지 시장 정보와 파트너십, 실증 기회를 제공하며, 프랑스·독일·영국 등
               주요 유럽 국가와 미국의 유통사·투자사와 협력 네트워크를 구축해 다지역 확장을 지원합니다.
             </p>
+            <a
+              href="https://www.mysc.co.kr/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 w-fit inline-flex items-center gap-2 h-11 px-7 rounded-full border border-[#0b1b35] text-[15px] font-bold text-[#0b1b35] hover:bg-[#0b1b35] hover:text-white transition-colors"
+            >
+              기업 홈페이지 바로가기
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
           </div>
         </div>
 

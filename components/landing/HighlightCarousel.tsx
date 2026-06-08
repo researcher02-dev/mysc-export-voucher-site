@@ -105,7 +105,7 @@ export default function HighlightCarousel({ services }: HighlightCarouselProps) 
             엠와이소셜컴퍼니가 함께 실행합니다.
           </h2>
           <p className="text-[16px] sm:text-[18px] font-medium text-[#cad5e2] mt-4">
-            운영 중인 지원 서비스는 수출바우처 메뉴페이지에서 확인해보세요.
+            운영 중인 지원 서비스는 서비스 찾기 페이지에서 확인해보세요.
           </p>
         </div>
 

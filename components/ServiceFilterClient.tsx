@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 import type { Service } from '@/types/service'
 import {
   COUNTRY_OPTIONS,
@@ -17,8 +18,6 @@ import { openTallyGeneral } from '@/lib/tally'
 interface ServiceFilterClientProps {
   services: Service[]
 }
-
-// ── Filtering helpers ─────────────────────────────────────────────────────────
 
 function matchesCountry(service: Service, selected: string[]): boolean {
   if (selected.length === 0) return true
@@ -42,25 +41,18 @@ function matchesIndustry(service: Service, selected: string[]): boolean {
   return service.industry_tags.some((t) => targetTags.includes(t))
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
-
-export default function ServiceFilterClient({
-  services,
-}: ServiceFilterClientProps) {
+export default function ServiceFilterClient({ services }: ServiceFilterClientProps) {
   const searchParams = useSearchParams()
 
   const [selectedCountries, setSelectedCountries] = useState<string[]>(() => {
     const param = searchParams.get('country')
-    if (param && (COUNTRY_OPTIONS as readonly string[]).includes(param)) {
-      return [param]
-    }
+    if (param && (COUNTRY_OPTIONS as readonly string[]).includes(param)) return [param]
     return []
   })
-  const [selectedSupportTypes, setSelectedSupportTypes] = useState<string[]>([])
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([])
+  const [selectedSupportTypes, setSelectedSupportTypes] = useState<string[]>([])
   const [drawerService, setDrawerService] = useState<Service | null>(null)
 
-  // Sync country param on mount if URL changes after hydration
   useEffect(() => {
     const param = searchParams.get('country')
     if (param && (COUNTRY_OPTIONS as readonly string[]).includes(param)) {
@@ -69,238 +61,161 @@ export default function ServiceFilterClient({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const toggleCountry = (country: string) => {
-    setSelectedCountries((prev) =>
-      prev.includes(country)
-        ? prev.filter((c) => c !== country)
-        : [...prev, country]
-    )
-  }
+  const toggleCountry = (v: string) =>
+    setSelectedCountries((p) => p.includes(v) ? p.filter((c) => c !== v) : [...p, v])
+  const toggleIndustry = (v: string) =>
+    setSelectedIndustries((p) => p.includes(v) ? p.filter((i) => i !== v) : [...p, v])
+  const toggleSupportType = (v: string) =>
+    setSelectedSupportTypes((p) => p.includes(v) ? p.filter((t) => t !== v) : [...p, v])
 
-  const toggleSupportType = (value: string) => {
-    setSelectedSupportTypes((prev) =>
-      prev.includes(value)
-        ? prev.filter((t) => t !== value)
-        : [...prev, value]
-    )
-  }
-
-  const toggleIndustry = (label: string) => {
-    setSelectedIndustries((prev) =>
-      prev.includes(label)
-        ? prev.filter((i) => i !== label)
-        : [...prev, label]
-    )
-  }
-
-  const resetCountries = () => setSelectedCountries([])
-  const resetSupportTypes = () => setSelectedSupportTypes([])
-  const resetIndustries = () => setSelectedIndustries([])
   const resetAll = () => {
     setSelectedCountries([])
-    setSelectedSupportTypes([])
     setSelectedIndustries([])
+    setSelectedSupportTypes([])
   }
 
   const anyFilterActive =
     selectedCountries.length > 0 ||
-    selectedSupportTypes.length > 0 ||
-    selectedIndustries.length > 0
+    selectedIndustries.length > 0 ||
+    selectedSupportTypes.length > 0
 
   const filtered = useMemo(
     () =>
       services.filter(
         (s) =>
           matchesCountry(s, selectedCountries) &&
-          matchesSupportType(s, selectedSupportTypes) &&
-          matchesIndustry(s, selectedIndustries)
+          matchesIndustry(s, selectedIndustries) &&
+          matchesSupportType(s, selectedSupportTypes)
       ),
-    [services, selectedCountries, selectedSupportTypes, selectedIndustries]
+    [services, selectedCountries, selectedIndustries, selectedSupportTypes]
   )
 
-  // Support type descriptions for selected types
   const activeDescriptions = selectedSupportTypes
     .map((v) => ({ value: v, desc: SUPPORT_TYPE_DESCRIPTIONS[v] }))
     .filter((d) => Boolean(d.desc))
 
+  const chipClass = (active: boolean) =>
+    `cursor-pointer h-10 px-6 rounded-full text-[14px] font-medium transition-all whitespace-nowrap ${
+      active
+        ? 'bg-[#33c3ff] text-white shadow-[0px_4px_3px_rgba(0,0,0,0.1),0px_2px_2px_rgba(0,0,0,0.1)]'
+        : 'bg-white text-[#314158] shadow-[0px_1px_1.5px_rgba(0,0,0,0.1),0px_1px_1px_rgba(0,0,0,0.1)] hover:shadow-[0px_2px_4px_rgba(0,0,0,0.12)] hover:bg-[#f0f9ff]'
+    }`
+
   return (
     <>
-      {/* ── Filter section ───────────────────────────────────────────────── */}
       <section className="bg-[#f8f9fb] border-b border-[#e8eef5]">
-        <div className="max-w-[1280px] mx-auto px-5 sm:px-10 xl:px-12 pt-12 pb-8">
+        <div className="max-w-[1280px] mx-auto px-5 sm:px-10 xl:px-12 pt-10 pb-8">
+
+          {/* 선정기업 안내 배너 */}
+          <div className="flex items-center justify-between gap-4 bg-[#eef6fc] border border-[#c8e4f5] rounded-xl px-5 py-3 mb-8">
+            <p className="text-[14px] font-medium text-[#2d6a94] leading-[1.6]">
+              이 페이지는 <span className="font-semibold">수출바우처 선정기업</span>을 위한 서비스 목록입니다.
+            </p>
+            <Link
+              href="/guide"
+              className="shrink-0 text-[13px] font-semibold text-[#33c3ff] hover:text-[#1ab0ed] transition-colors whitespace-nowrap"
+            >
+              아직 신청 전이라면 → 신청방법 안내
+            </Link>
+          </div>
+
           <div className="flex flex-col gap-8">
 
-            {/* Country / region filter */}
+            {/* 1. 국가/권역 */}
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-[18px] font-bold text-[#0b1b35] leading-7">
-                  관심 국가/권역
-                </h2>
+                <h2 className="text-[18px] font-bold text-[#0b1b35] leading-7">관심 국가/권역</h2>
                 {selectedCountries.length > 0 && (
-                  <button
-                    onClick={resetCountries}
-                    className="cursor-pointer text-[13px] font-medium text-[#99a1af] hover:text-[#314158] underline underline-offset-2 transition-colors"
-                  >
+                  <button onClick={() => setSelectedCountries([])} className="cursor-pointer text-[13px] font-medium text-[#99a1af] hover:text-[#314158] underline underline-offset-2 transition-colors">
                     국가/권역 선택 초기화
                   </button>
                 )}
               </div>
               <div className="flex flex-wrap gap-3">
-                {COUNTRY_OPTIONS.map((country) => {
-                  const active = selectedCountries.includes(country)
-                  return (
-                    <button
-                      key={country}
-                      onClick={() => toggleCountry(country)}
-                      className={`cursor-pointer h-10 px-6 rounded-full text-[14px] font-medium transition-all whitespace-nowrap ${
-                        active
-                          ? 'bg-[#33c3ff] text-white shadow-[0px_4px_3px_rgba(0,0,0,0.1),0px_2px_2px_rgba(0,0,0,0.1)]'
-                          : 'bg-white text-[#314158] shadow-[0px_1px_1.5px_rgba(0,0,0,0.1),0px_1px_1px_rgba(0,0,0,0.1)] hover:shadow-[0px_2px_4px_rgba(0,0,0,0.12)] hover:bg-[#f0f9ff]'
-                      }`}
-                    >
-                      {country}
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-
-            {/* Support type filter */}
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-[18px] font-bold text-[#0b1b35] leading-7">
-                  필요한 지원유형
-                </h2>
-                {selectedSupportTypes.length > 0 && (
-                  <button
-                    onClick={resetSupportTypes}
-                    className="cursor-pointer text-[13px] font-medium text-[#99a1af] hover:text-[#314158] underline underline-offset-2 transition-colors"
-                  >
-                    지원유형 선택 초기화
+                {COUNTRY_OPTIONS.map((c) => (
+                  <button key={c} onClick={() => toggleCountry(c)} className={chipClass(selectedCountries.includes(c))}>
+                    {c}
                   </button>
-                )}
-              </div>
-              <div className="flex flex-wrap gap-3">
-                {SUPPORT_TYPE_OPTIONS.map(({ label, value }) => {
-                  const active = selectedSupportTypes.includes(value)
-                  return (
-                    <button
-                      key={value}
-                      onClick={() => toggleSupportType(value)}
-                      className={`cursor-pointer h-10 px-6 rounded-full text-[14px] font-medium transition-all whitespace-nowrap ${
-                        active
-                          ? 'bg-[#33c3ff] text-white shadow-[0px_4px_3px_rgba(0,0,0,0.1),0px_2px_2px_rgba(0,0,0,0.1)]'
-                          : 'bg-white text-[#314158] shadow-[0px_1px_1.5px_rgba(0,0,0,0.1),0px_1px_1px_rgba(0,0,0,0.1)] hover:shadow-[0px_2px_4px_rgba(0,0,0,0.12)] hover:bg-[#f0f9ff]'
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  )
-                })}
+                ))}
               </div>
             </div>
 
-            {/* Industry filter */}
+            {/* 2. 산업 분야 */}
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-[18px] font-bold text-[#0b1b35] leading-7">
-                  산업 분야
-                </h2>
+                <h2 className="text-[18px] font-bold text-[#0b1b35] leading-7">산업 분야</h2>
                 {selectedIndustries.length > 0 && (
-                  <button
-                    onClick={resetIndustries}
-                    className="cursor-pointer text-[13px] font-medium text-[#99a1af] hover:text-[#314158] underline underline-offset-2 transition-colors"
-                  >
+                  <button onClick={() => setSelectedIndustries([])} className="cursor-pointer text-[13px] font-medium text-[#99a1af] hover:text-[#314158] underline underline-offset-2 transition-colors">
                     산업 선택 초기화
                   </button>
                 )}
               </div>
               <div className="flex flex-wrap gap-3">
-                {INDUSTRY_OPTIONS.map(({ label }) => {
-                  const active = selectedIndustries.includes(label)
-                  return (
-                    <button
-                      key={label}
-                      onClick={() => toggleIndustry(label)}
-                      className={`cursor-pointer h-10 px-6 rounded-full text-[14px] font-medium transition-all whitespace-nowrap ${
-                        active
-                          ? 'bg-[#33c3ff] text-white shadow-[0px_4px_3px_rgba(0,0,0,0.1),0px_2px_2px_rgba(0,0,0,0.1)]'
-                          : 'bg-white text-[#314158] shadow-[0px_1px_1.5px_rgba(0,0,0,0.1),0px_1px_1px_rgba(0,0,0,0.1)] hover:shadow-[0px_2px_4px_rgba(0,0,0,0.12)] hover:bg-[#f0f9ff]'
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  )
-                })}
+                {INDUSTRY_OPTIONS.map(({ label }) => (
+                  <button key={label} onClick={() => toggleIndustry(label)} className={chipClass(selectedIndustries.includes(label))}>
+                    {label}
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* Result count + reset row */}
+            {/* 3. 지원유형 + 설명 인라인 */}
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-[18px] font-bold text-[#0b1b35] leading-7">필요한 지원유형</h2>
+                {selectedSupportTypes.length > 0 && (
+                  <button onClick={() => setSelectedSupportTypes([])} className="cursor-pointer text-[13px] font-medium text-[#99a1af] hover:text-[#314158] underline underline-offset-2 transition-colors">
+                    지원유형 선택 초기화
+                  </button>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-3">
+                {SUPPORT_TYPE_OPTIONS.map(({ label, value }) => (
+                  <button key={value} onClick={() => toggleSupportType(value)} className={chipClass(selectedSupportTypes.includes(value))}>
+                    {label}
+                  </button>
+                ))}
+              </div>
+              {activeDescriptions.length > 0 && (
+                <div className="flex flex-col gap-1">
+                  {activeDescriptions.map(({ value, desc }) => (
+                    <p key={value} className="text-[14px] font-medium text-[#4a7fa8] leading-[1.6]">
+                      <span className="font-semibold text-[#2d6a94]">{value}</span>
+                      {'  '}{desc}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* 결과 + 초기화 */}
             <div className="flex items-center justify-between border-t border-[#e8eef5] pt-6">
               <div className="flex items-center gap-4">
                 <p className="text-[16px] font-bold text-[#314158]">
                   총 {filtered.length}개의 서비스를 확인할 수 있습니다.
                 </p>
                 {anyFilterActive && (
-                  <button
-                    onClick={resetAll}
-                    className="cursor-pointer h-9 px-5 rounded-full bg-white text-[14px] font-medium text-[#314158] shadow-[0px_1px_1.5px_rgba(0,0,0,0.1),0px_1px_1px_rgba(0,0,0,0.1)] hover:shadow-[0px_2px_4px_rgba(0,0,0,0.12)] transition-shadow"
-                  >
+                  <button onClick={resetAll} className="cursor-pointer h-9 px-5 rounded-full bg-white text-[14px] font-medium text-[#314158] shadow-[0px_1px_1.5px_rgba(0,0,0,0.1),0px_1px_1px_rgba(0,0,0,0.1)] hover:shadow-[0px_2px_4px_rgba(0,0,0,0.12)] transition-shadow">
                     필터 초기화
                   </button>
                 )}
               </div>
-
-              <a
-                href="/diagnosis"
-                className="cursor-pointer h-10 px-6 rounded-full bg-[#0b1b35] text-white text-[14px] font-bold flex items-center gap-2 hover:bg-[#162d52] transition-colors whitespace-nowrap"
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Z" fill="currentColor"/>
-                  <path d="M8 4.5a.75.75 0 0 1 .75.75v3.69l2.28 2.28a.75.75 0 1 1-1.06 1.06L7.47 9.78A.75.75 0 0 1 7.25 9V5.25A.75.75 0 0 1 8 4.5Z" fill="currentColor"/>
-                </svg>
-                내 메뉴 찾기
-              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Support type description banner ──────────────────────────────── */}
-      {activeDescriptions.length > 0 && (
-        <div className="bg-[#eef6fc] border-b border-[#d6eaf7]">
-          <div className="max-w-[1280px] mx-auto px-5 sm:px-10 xl:px-12 py-4 flex flex-col gap-1.5">
-            {activeDescriptions.map(({ value, desc }) => (
-              <p key={value} className="text-[14px] font-medium text-[#4a7fa8] leading-[1.6]">
-                <span className="font-semibold text-[#2d6a94]">{value}</span>
-                {'  '}
-                {desc}
-              </p>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* ── Service card grid ────────────────────────────────────────────── */}
       <section className="bg-white">
         <div className="max-w-[1280px] mx-auto px-5 sm:px-10 xl:px-12 py-16">
           {services.length === 0 ? (
             <div className="text-center py-20">
-              <p className="text-[16px] font-medium text-[#99a1af]">
-                서비스 정보를 불러오지 못했습니다.
-              </p>
-              <p className="text-[14px] text-[#99a1af] mt-2">
-                잠시 후 다시 시도해주세요.
-              </p>
+              <p className="text-[16px] font-medium text-[#99a1af]">서비스 정보를 불러오지 못했습니다.</p>
+              <p className="text-[14px] text-[#99a1af] mt-2">잠시 후 다시 시도해주세요.</p>
             </div>
           ) : filtered.length === 0 ? (
             <div className="text-center py-20">
-              <p className="text-[16px] font-medium text-[#314158]">
-                조건에 맞는 서비스가 없습니다.
-              </p>
-              <p className="text-[14px] text-[#99a1af] mt-2">
-                선택한 국가나 지원유형을 다시 조정해보세요.
-              </p>
+              <p className="text-[16px] font-medium text-[#314158]">조건에 맞는 서비스가 없습니다.</p>
+              <p className="text-[14px] text-[#99a1af] mt-2">선택한 필터를 다시 조정해보세요.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -316,7 +231,6 @@ export default function ServiceFilterClient({
         </div>
       </section>
 
-      {/* ── Bottom consultation CTA ──────────────────────────────────────── */}
       <section className="bg-[#0b1b35]">
         <div className="max-w-[1280px] mx-auto px-5 sm:px-10 xl:px-12 py-24 flex flex-col items-center gap-5 text-center">
           <h2 className="text-[36px] font-bold text-white leading-[1.3] tracking-[-1.5px]">
@@ -339,11 +253,7 @@ export default function ServiceFilterClient({
         </div>
       </section>
 
-      {/* ── Service detail drawer ────────────────────────────────────────── */}
-      <ServiceDrawer
-        service={drawerService}
-        onClose={() => setDrawerService(null)}
-      />
+      <ServiceDrawer service={drawerService} onClose={() => setDrawerService(null)} />
     </>
   )
 }
