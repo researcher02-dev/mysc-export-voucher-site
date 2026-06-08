@@ -195,8 +195,9 @@ export default function GuidePage() {
                 {/* 상단: 정부 → 운영기관 분기 */}
                 <div className="flex flex-col items-center gap-2 mb-6">
                   <div className="bg-white/10 border border-white/20 rounded-xl px-6 py-3 text-center">
-                    <p className="text-[12px] text-[#33c3ff] font-bold tracking-[1px] uppercase mb-1">정부 예산</p>
-                    <p className="text-white text-[14px] font-bold">중소벤처기업부 · 산업통상자원부</p>
+                    <p className="text-[12px] text-[#33c3ff] font-bold tracking-[1px] uppercase mb-1">정부 수출지원 예산</p>
+                    <p className="text-white text-[14px] font-bold">중기부 · 산업부 · 지자체 등</p>
+                    <p className="text-[#cad5e2] text-[12px] mt-1">부처별로 예산 편성 → 사업 설계·공고</p>
                   </div>
                   <div className="text-[#33c3ff] text-[20px]">↓</div>
                   <div className="grid grid-cols-2 gap-3 w-full max-w-[500px]">
