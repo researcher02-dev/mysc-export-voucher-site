@@ -97,9 +97,6 @@ export default function GuidePage() {
         }}
       >
         <div className="max-w-[900px] mx-auto px-5 sm:px-10 text-center flex flex-col items-center gap-5">
-          <span className="inline-block text-[12px] font-bold tracking-[2px] text-[#33c3ff] uppercase">
-            마지막 업데이트: 2026-06-08 · 수출바우처 포털·정산가이드(중기부/KOTRA) 반영
-          </span>
           <h1 className="text-[40px] sm:text-[52px] font-black text-white leading-[1.15] tracking-[-2px]">
             수출바우처 신청 안내 페이지
           </h1>
