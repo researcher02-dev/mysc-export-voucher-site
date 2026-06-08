@@ -47,6 +47,16 @@ export default function Navbar() {
         >
           서비스 찾기
         </Link>
+        <Link
+          href="/guide"
+          className={`px-4 py-2 text-[15px] font-medium tracking-[0.3px] transition-colors ${
+            pathname === '/guide'
+              ? 'text-white'
+              : 'text-[#cad5e2] hover:text-white'
+          }`}
+        >
+          신청방법
+        </Link>
         <button
           onClick={() => openTallyGeneral('top_nav')}
           className="ml-2 px-6 py-2 rounded-full bg-[#33c3ff] text-white text-[15px] font-bold tracking-[0.3px] hover:bg-[#1ab0ed] transition-colors"

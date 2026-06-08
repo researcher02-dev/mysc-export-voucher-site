@@ -1,34 +1,34 @@
 const STEPS = [
   {
     num: 1,
-    label: '신청 · 접수',
-    detail: '수요기업 사업기간별 모집',
-    sub: '12-1, 4-5, 6,8월',
+    label: '신청·접수',
+    detail: '수요기업 모집 공고 확인\n및 신청·접수',
+    sub: '12~1월 · 4~5월',
     note: '공고 집중',
     highlight: true,
   },
   {
     num: 2,
-    label: '평가 · 선정',
-    detail: '수요기업 신청 건에 대한 평가 및 수요기업 선정',
+    label: '평가·선정',
+    detail: '신청 기업 평가 후\n수요기업 선정',
     highlight: false,
   },
   {
     num: 3,
     label: '바우처 발급',
-    detail: '바우처 발급 및 사용 계획서 작성',
+    detail: '바우처 발급 및\n사용계획서 작성',
     highlight: false,
   },
   {
     num: 4,
     label: '프로그램 신청',
-    detail: '홈페이지 내 MYSC 프로그램 신청 및 양자 계약 체결',
+    detail: '홈페이지 내 MYSC 서비스 선택 후\n신청·계약 체결',
     highlight: false,
   },
   {
     num: 5,
-    label: '사업수행 · 정산',
-    detail: '메뉴에 따라 결과물 제공 및 정산 진행',
+    label: '사업수행·정산',
+    detail: '서비스 수행 후\n결과물 제공 및 정산',
     highlight: false,
   },
 ]
@@ -92,7 +92,7 @@ export default function ProcessSection() {
         {/* Heading */}
         <div className="text-center mb-16">
           <p className="text-[18px] font-medium text-[#45556c] tracking-[-0.45px] mb-4">
-            바우처를 통해 컨설팅 및 전시회 트랙을 이용하고 싶다면?
+            바우처를 통해 MYSC의 서비스를 이용하고 싶다면?
           </p>
           <h2 className="text-[36px] sm:text-[48px] font-black text-[#0b1b35] leading-[1.25] tracking-[-2.4px]">
             먼저 <span className="text-[#33c3ff]">수출바우처</span>

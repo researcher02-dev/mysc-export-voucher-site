@@ -37,7 +37,7 @@ export default function HeroSection() {
             스타트업 수출바우처
           </h1>
           <p className="text-[48px] sm:text-[60px] font-black text-[#33c3ff] leading-[1.1] tracking-[-3px]">
-            어떻게 활용해야할지 고민이셨나요?
+            어떻게 활용해야 할지 고민이셨나요?
           </p>
         </div>
 

@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { fetchServices, getVisibleServices } from '@/lib/csv'
 import Navbar from '@/components/Navbar'
 import ServiceFilterClient from '@/components/ServiceFilterClient'
@@ -13,7 +14,7 @@ export default async function ServicesPage() {
       <Navbar />
 
       <main className="flex-1">
-        {/* ── Hero header ───────────────────────────────────────────────── */}
+        {/* Hero header */}
         <section className="bg-[#0b1b35] w-full">
           <div className="max-w-[1280px] mx-auto px-5 sm:px-10 xl:px-12 pt-[94px] pb-28">
             <h1 className="text-[36px] font-black text-white leading-[1.5] tracking-[-1.5px] mb-5">
@@ -28,8 +29,10 @@ export default async function ServicesPage() {
           </div>
         </section>
 
-        {/* ── Filters + Cards + CTA (client) ────────────────────────────── */}
-        <ServiceFilterClient services={visibleServices} />
+        {/* Filters + Cards + CTA (client) */}
+        <Suspense fallback={null}>
+          <ServiceFilterClient services={visibleServices} />
+        </Suspense>
       </main>
     </div>
   )

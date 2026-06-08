@@ -43,7 +43,15 @@ export default function AboutSection() {
               />
             </div>
             <h2 className="text-[30px] font-black text-[#0b1b35] leading-[1.2] tracking-[-1.5px]">
-              수출바우처 공급기업 &apos;엠와이소셜컴퍼니&apos;
+              수출바우처 공급기업{' '}
+              <a
+                href="https://www.mysc.co.kr/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#33c3ff] underline underline-offset-4 hover:text-[#1ab0ed] transition-colors"
+              >
+                &apos;엠와이소셜컴퍼니&apos;
+              </a>
             </h2>
             <p className="text-[18px] font-medium text-[#314158] leading-[1.75] tracking-[-0.45px]">
               MYSC(엠와이소셜컴퍼니)는 스타트업의 글로벌 확장과 해외 사업화를 전문 지원하는
@@ -58,17 +66,17 @@ export default function AboutSection() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
           {[
             {
-              title: '지원대상',
+              title: '지원 대상',
               body: '수출을 목표하는\n국내 중소/중견 기업\n(예비수출기업 포함)',
               icon: '/images/icon-target.png',
             },
             {
-              title: '지원분야',
+              title: '지원 분야',
               body: '조사일반컨설팅\n(컨설팅, 비즈매칭 포함)\n전시회/행사/해외영업지원',
               icon: '/images/icon-support.png',
             },
             {
-              title: '바우처한도',
+              title: '바우처 한도',
               body: '기업 기존 수출 실적 및\n심사 결과에 따라\n3천만원 ~ 1억원 이상',
               icon: '/images/icon-voucher.png',
             },

@@ -98,17 +98,14 @@ export default function HighlightCarousel({ services }: HighlightCarouselProps) 
 
         {/* Section heading */}
         <div className="text-center mb-16">
-          <p className="text-[18px] sm:text-[20px] font-bold text-[#cad5e2] mb-3">
-            수출바우처 선정된 기업 혹은
-          </p>
-          <h2 className="text-[36px] sm:text-[48px] font-black text-white leading-[1.1] tracking-[-2.4px]">
-            해외 진출을 함께 할 파트너를 찾고 있다면
+          <h2 className="text-[36px] sm:text-[48px] font-extrabold text-white leading-[1.1] tracking-[-2.4px]">
+            수출바우처 선정기업의 해외 진출,
           </h2>
-          <h2 className="text-[36px] sm:text-[48px] font-black text-[#33c3ff] leading-[1.1] tracking-[-2.4px]">
-            엠와이소셜컴퍼니와 함께하세요.
+          <h2 className="text-[36px] sm:text-[48px] font-extrabold text-[#33c3ff] leading-[1.1] tracking-[-2.4px]">
+            엠와이소셜컴퍼니가 함께 실행합니다.
           </h2>
-          <p className="text-[16px] sm:text-[18px] font-bold text-[#cad5e2] mt-4">
-            상시 모집 메뉴는 수출바우처 메뉴페이지를 확인하세요.
+          <p className="text-[16px] sm:text-[18px] font-medium text-[#cad5e2] mt-4">
+            운영 중인 지원 서비스는 수출바우처 메뉴페이지에서 확인해보세요.
           </p>
         </div>
 

@@ -1,10 +1,13 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import type { Service } from '@/types/service'
 import {
   COUNTRY_OPTIONS,
   SUPPORT_TYPE_OPTIONS,
+  INDUSTRY_OPTIONS,
+  SUPPORT_TYPE_DESCRIPTIONS,
   normalizeSupportType,
 } from '@/lib/filter-config'
 import ServiceCard from './ServiceCard'
@@ -19,7 +22,6 @@ interface ServiceFilterClientProps {
 
 function matchesCountry(service: Service, selected: string[]): boolean {
   if (selected.length === 0) return true
-  // Always include "전체 국가"-tagged services when any country filter is active
   const matchSet = new Set([...selected, '전체 국가'])
   return service.countries.some((c) => matchSet.has(c.trim()))
 }
@@ -32,16 +34,41 @@ function matchesSupportType(service: Service, selected: string[]): boolean {
   )
 }
 
+function matchesIndustry(service: Service, selected: string[]): boolean {
+  if (selected.length === 0) return true
+  const targetTags: string[] = INDUSTRY_OPTIONS
+    .filter((o) => selected.includes(o.label))
+    .flatMap((o) => [...o.tags])
+  return service.industry_tags.some((t) => targetTags.includes(t))
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function ServiceFilterClient({
   services,
 }: ServiceFilterClientProps) {
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([])
+  const searchParams = useSearchParams()
+
+  const [selectedCountries, setSelectedCountries] = useState<string[]>(() => {
+    const param = searchParams.get('country')
+    if (param && (COUNTRY_OPTIONS as readonly string[]).includes(param)) {
+      return [param]
+    }
+    return []
+  })
   const [selectedSupportTypes, setSelectedSupportTypes] = useState<string[]>([])
+  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([])
   const [drawerService, setDrawerService] = useState<Service | null>(null)
 
-  // Toggle a country chip
+  // Sync country param on mount if URL changes after hydration
+  useEffect(() => {
+    const param = searchParams.get('country')
+    if (param && (COUNTRY_OPTIONS as readonly string[]).includes(param)) {
+      setSelectedCountries([param])
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const toggleCountry = (country: string) => {
     setSelectedCountries((prev) =>
       prev.includes(country)
@@ -50,7 +77,6 @@ export default function ServiceFilterClient({
     )
   }
 
-  // Toggle a support type chip
   const toggleSupportType = (value: string) => {
     setSelectedSupportTypes((prev) =>
       prev.includes(value)
@@ -59,26 +85,43 @@ export default function ServiceFilterClient({
     )
   }
 
+  const toggleIndustry = (label: string) => {
+    setSelectedIndustries((prev) =>
+      prev.includes(label)
+        ? prev.filter((i) => i !== label)
+        : [...prev, label]
+    )
+  }
+
   const resetCountries = () => setSelectedCountries([])
   const resetSupportTypes = () => setSelectedSupportTypes([])
+  const resetIndustries = () => setSelectedIndustries([])
   const resetAll = () => {
     setSelectedCountries([])
     setSelectedSupportTypes([])
+    setSelectedIndustries([])
   }
 
   const anyFilterActive =
-    selectedCountries.length > 0 || selectedSupportTypes.length > 0
+    selectedCountries.length > 0 ||
+    selectedSupportTypes.length > 0 ||
+    selectedIndustries.length > 0
 
-  // Filtered services
   const filtered = useMemo(
     () =>
       services.filter(
         (s) =>
           matchesCountry(s, selectedCountries) &&
-          matchesSupportType(s, selectedSupportTypes)
+          matchesSupportType(s, selectedSupportTypes) &&
+          matchesIndustry(s, selectedIndustries)
       ),
-    [services, selectedCountries, selectedSupportTypes]
+    [services, selectedCountries, selectedSupportTypes, selectedIndustries]
   )
+
+  // Support type descriptions for selected types
+  const activeDescriptions = selectedSupportTypes
+    .map((v) => ({ value: v, desc: SUPPORT_TYPE_DESCRIPTIONS[v] }))
+    .filter((d) => Boolean(d.desc))
 
   return (
     <>
@@ -157,6 +200,41 @@ export default function ServiceFilterClient({
               </div>
             </div>
 
+            {/* Industry filter */}
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-[18px] font-bold text-[#0b1b35] leading-7">
+                  산업 분야
+                </h2>
+                {selectedIndustries.length > 0 && (
+                  <button
+                    onClick={resetIndustries}
+                    className="cursor-pointer text-[13px] font-medium text-[#99a1af] hover:text-[#314158] underline underline-offset-2 transition-colors"
+                  >
+                    산업 선택 초기화
+                  </button>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-3">
+                {INDUSTRY_OPTIONS.map(({ label }) => {
+                  const active = selectedIndustries.includes(label)
+                  return (
+                    <button
+                      key={label}
+                      onClick={() => toggleIndustry(label)}
+                      className={`cursor-pointer h-10 px-6 rounded-full text-[14px] font-medium transition-all whitespace-nowrap ${
+                        active
+                          ? 'bg-[#33c3ff] text-white shadow-[0px_4px_3px_rgba(0,0,0,0.1),0px_2px_2px_rgba(0,0,0,0.1)]'
+                          : 'bg-white text-[#314158] shadow-[0px_1px_1.5px_rgba(0,0,0,0.1),0px_1px_1px_rgba(0,0,0,0.1)] hover:shadow-[0px_2px_4px_rgba(0,0,0,0.12)] hover:bg-[#f0f9ff]'
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
             {/* Result count + reset row */}
             <div className="flex items-center justify-between border-t border-[#e8eef5] pt-6">
               <div className="flex items-center gap-4">
@@ -188,11 +266,25 @@ export default function ServiceFilterClient({
         </div>
       </section>
 
+      {/* ── Support type description banner ──────────────────────────────── */}
+      {activeDescriptions.length > 0 && (
+        <div className="bg-[#eef6fc] border-b border-[#d6eaf7]">
+          <div className="max-w-[1280px] mx-auto px-5 sm:px-10 xl:px-12 py-4 flex flex-col gap-1.5">
+            {activeDescriptions.map(({ value, desc }) => (
+              <p key={value} className="text-[14px] font-medium text-[#4a7fa8] leading-[1.6]">
+                <span className="font-semibold text-[#2d6a94]">{value}</span>
+                {'  '}
+                {desc}
+              </p>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* ── Service card grid ────────────────────────────────────────────── */}
       <section className="bg-white">
         <div className="max-w-[1280px] mx-auto px-5 sm:px-10 xl:px-12 py-16">
           {services.length === 0 ? (
-            /* Initial empty — likely a data error */
             <div className="text-center py-20">
               <p className="text-[16px] font-medium text-[#99a1af]">
                 서비스 정보를 불러오지 못했습니다.
@@ -202,7 +294,6 @@ export default function ServiceFilterClient({
               </p>
             </div>
           ) : filtered.length === 0 ? (
-            /* Filter-induced empty */
             <div className="text-center py-20">
               <p className="text-[16px] font-medium text-[#314158]">
                 조건에 맞는 서비스가 없습니다.

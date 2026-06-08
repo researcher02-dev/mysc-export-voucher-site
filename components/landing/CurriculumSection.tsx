@@ -1,4 +1,14 @@
-const CURRICULUM_TABS = ['전체', '미국', '프랑스', '독일', '일본', '싱가포르', '유럽']
+import Link from 'next/link'
+
+const CURRICULUM_TABS = [
+  { label: '전체', href: '/services' },
+  { label: '미국', href: '/services?country=%EB%AF%B8%EA%B5%AD' },
+  { label: '프랑스', href: '/services?country=%ED%94%84%EB%9E%91%EC%8A%A4' },
+  { label: '독일', href: '/services?country=%EB%8F%85%EC%9D%BC' },
+  { label: '일본', href: '/services?country=%EC%9D%BC%EB%B3%B8' },
+  { label: '싱가포르', href: '/services?country=%EC%8B%B1%EA%B0%80%ED%8F%AC%EB%A5%B4' },
+  { label: '유럽', href: '/services?country=%EC%9C%A0%EB%9F%BD' },
+]
 
 export default function CurriculumSection() {
   return (
@@ -30,18 +40,15 @@ export default function CurriculumSection() {
 
         {/* Country tab row */}
         <div className="flex flex-wrap gap-3 justify-center mb-8">
-          {CURRICULUM_TABS.map((tab) => (
-            <div
-              key={tab}
-              className="h-[60px] w-[93px] flex items-center justify-center rounded-lg bg-white/10 border border-white/20"
+          {CURRICULUM_TABS.map(({ label, href }) => (
+            <Link
+              key={label}
+              href={href}
+              className="h-[60px] w-[93px] flex items-center justify-center rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-colors"
             >
-              <span className="text-[14px] font-bold text-white/80">{tab}</span>
-            </div>
+              <span className="text-[14px] font-bold text-white/80">{label}</span>
+            </Link>
           ))}
-          {/* 상세 메뉴 바로가기 — hidden for MVP (menu board not implemented) */}
-          <span aria-hidden="true" className="hidden">
-            상세 메뉴 바로가기
-          </span>
         </div>
 
         {/* Curriculum board image */}
