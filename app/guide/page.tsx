@@ -101,31 +101,11 @@ export default function GuidePage() {
             마지막 업데이트: 2026-06-08 · 수출바우처 포털·정산가이드(중기부/KOTRA) 반영
           </span>
           <h1 className="text-[40px] sm:text-[52px] font-black text-white leading-[1.15] tracking-[-2px]">
-            수출바우처 신청방법
+            수출바우처 신청 안내 페이지
           </h1>
           <p className="text-[18px] sm:text-[20px] font-medium text-[#cad5e2] leading-[1.65] max-w-[680px]">
-            이 사업이 뭔지, 우리 회사가 해당되는지, 어떻게 쓰는지까지 한 번에 파악할 수 있도록 정리했습니다.
+            전반적인 사업 운영 구조 및 지원 대상, 받을 수 있는 혜택 등을 종합적으로 정리했습니다.
           </p>
-
-          {/* Quick-answer cards */}
-          <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-[740px]">
-            {[
-              { label: '신청처', value: 'exportvoucher.com (온라인)' },
-              { label: '기본 대상', value: '중소기업 / 일부 트랙 중견기업' },
-              { label: '동시 신청', value: '동일공고 최대 2개 → 선정 1개' },
-              { label: '기업 부담금', value: '중소 30% / 중견 50%' },
-            ].map(({ label, value }) => (
-              <div
-                key={label}
-                className="bg-white/10 backdrop-blur rounded-xl p-4 text-left flex flex-col gap-1"
-              >
-                <span className="text-[11px] font-bold text-[#33c3ff] tracking-[1px] uppercase">
-                  {label}
-                </span>
-                <span className="text-[13px] font-medium text-white leading-[1.5]">{value}</span>
-              </div>
-            ))}
-          </div>
 
           <div className="mt-4 flex flex-col sm:flex-row gap-3 items-center">
             <GuideCta label="수출바우처 서비스 상담받기" source="guide_hero" />
@@ -152,7 +132,6 @@ export default function GuidePage() {
             ['#docs', '제출서류'],
             ['#evaluation', '선정기준'],
             ['#faq', 'FAQ'],
-            ['#checklist', '체크리스트'],
           ].map(([href, text]) => (
             <a
               key={href}
@@ -172,7 +151,7 @@ export default function GuidePage() {
           {/* 1. 사업 구조 이해 */}
           <section id="structure">
             <SectionLabel>사업 구조 이해</SectionLabel>
-            <H2>수출바우처, 이 사업이 뭔가요?</H2>
+            <H2>수출바우처는 어떤 사업인가요?</H2>
             <Prose>
               정부가 수출을 준비하는 기업에게 <strong>바우처(이용권)</strong>를 발급하면,
               기업이 그 바우처로 공식 서비스 메뉴판에서 필요한 서비스를 골라 쓰는 방식입니다.
@@ -185,7 +164,7 @@ export default function GuidePage() {
               {[
                 {
                   term: '참여기업',
-                  def: '바우처를 발급받아 서비스를 이용하는 수요 기업. 공식 용어는 "참여기업".',
+                  def: '바우처를 발급받아 서비스를 이용하는 수요 기업.',
                   icon: '🏢',
                 },
                 {
@@ -298,9 +277,9 @@ export default function GuidePage() {
             </div>
 
             <InfoBox>
-              📌 이 페이지는 공통적으로 반복되는 기준을 안내합니다. 최종 판단은 반드시 해당 차수
-              공고문을 직접 확인하세요. 공식 FAQ도 "제출자료와 세부 사업 내용은 사업별로 상이하므로
-              공고문 세부내용을 직접 확인하라"고 안내합니다.
+              📌 이 페이지는 수출바우처 공고에서 공통적으로 확인되는 기준을 바탕으로 작성되었습니다.
+              <br />
+              다만 제출서류와 세부 지원 내용은 사업별·차수별로 달라질 수 있으므로, 최종 기준은 반드시 해당 공고문에서 확인해 주세요.
             </InfoBox>
           </section>
 
@@ -309,9 +288,9 @@ export default function GuidePage() {
             <SectionLabel>신청 대상</SectionLabel>
             <H2>누가, 얼마나 지원받을 수 있나요?</H2>
             <Prose>
-              중소기업이 기본 대상이며, 트랙에 따라 중견기업도 포함됩니다. 수출실적이 없어도
-              신청 가능한 트랙이 있으므로 "우리 회사는 해당 없겠지"라고 단정하기 전에 트랙별
-              요건을 먼저 확인하세요.
+              중소기업이 기본 대상이며, 공고에 따라 중견기업도 신청할 수 있습니다. 일부 공고는
+              수출실적이 없거나 적은 기업도 신청 가능한 구간을 운영하므로, 먼저 공고별 지원 요건을
+              확인하는 것을 추천드립니다.
             </Prose>
 
             <div className="mt-6 grid sm:grid-cols-2 gap-4">
@@ -449,8 +428,8 @@ export default function GuidePage() {
             </div>
 
             <WarnBox>
-              ⚠️ 일부 지역·연계형 프로그램은 온라인 신청 외 별도 서류 제출이 함께 필요합니다.
-              제출 버튼을 눌렀다고 끝이 아닐 수 있으니 공고문 내 제출방법 항목을 반드시 재확인하세요.
+              ⚠️ 일부 세부사업이나 지역·연계형 공고는 온라인 신청 외에 추가 서류 제출 또는 별도 제출 절차가 안내될 수 있습니다.
+              온라인 제출을 완료했더라도 접수 요건이 모두 충족된 것은 아닐 수 있으므로, 공고문에 기재된 제출방법과 제출서류 항목을 반드시 다시 확인해 주세요.
             </WarnBox>
           </section>
 
@@ -496,8 +475,8 @@ export default function GuidePage() {
             </div>
 
             <InfoBox>
-              💡 세부사업이나 KOTRA 지역 연계형 프로그램에서는 사업자등록증만으로 끝나지 않는
-              경우가 많습니다. 공고별 추가서류 목록을 별도로 정리해두는 것을 권장합니다.
+              💡 수출바우처는 사업별로 신청 대상, 제출서류, 평가 방식이 달라질 수 있습니다.
+              사업자등록증 등 기본 서류만 준비하기보다, 해당 공고문에서 요구하는 추가 증빙서류 목록을 별도로 확인해두는 것이 안전합니다.
             </InfoBox>
           </section>
 
@@ -608,95 +587,6 @@ export default function GuidePage() {
                   </summary>
                   <div className="px-6 pb-5 pt-2 text-[15px] text-[#314158] leading-[1.75]">{a}</div>
                 </details>
-              ))}
-            </div>
-
-            {/* 그룹 3: 기타 */}
-            <p className="text-[13px] font-bold text-[#99a1af] uppercase tracking-[1px] mb-3">기타</p>
-            <div className="flex flex-col gap-3">
-              {[
-                {
-                  q: '수출바우처는 어디서 신청하나요?',
-                  a: '수출바우처 홈페이지(exportvoucher.com)에서 온라인으로 신청합니다. 동일공고 내 최대 2개 사업 신청이 가능하지만, 최종 선정은 1개 사업만 됩니다.',
-                },
-                {
-                  q: '같은 전시회에 다른 기관 지원금도 같이 받을 수 있나요?',
-                  a: '공식 FAQ 기준으로 동일 전시회에 대해 타 정부기관·지자체 지원금 중복수령은 불가합니다. 이미 다른 지원을 받고 있다면 반드시 사전에 운영기관에 확인하세요.',
-                },
-              ].map(({ q, a }) => (
-                <details key={q} className="group border border-[#e8eef5] rounded-xl overflow-hidden">
-                  <summary className="cursor-pointer flex items-start justify-between gap-4 px-6 py-5 text-[16px] font-bold text-[#0b1b35] list-none hover:bg-[#f8f9fb] transition-colors">
-                    <span>{q}</span>
-                    <span className="shrink-0 mt-1 w-5 h-5 rounded-full border border-[#cad5e2] flex items-center justify-center text-[12px] text-[#314158] group-open:rotate-180 transition-transform">▾</span>
-                  </summary>
-                  <div className="px-6 pb-5 pt-2 text-[15px] text-[#314158] leading-[1.75]">{a}</div>
-                </details>
-              ))}
-            </div>
-          </section>
-
-          {/* 7. 체크리스트 */}
-          <section id="checklist">
-            <SectionLabel>신청 전 확인</SectionLabel>
-            <H2>신청 체크리스트</H2>
-            <Prose>
-              공식 공고와 FAQ, 정산가이드를 바탕으로 정리한 항목입니다. 공고별 추가서류는 반드시
-              별도로 확인해야 합니다.
-            </Prose>
-
-            <div className="mt-6 flex flex-col gap-6">
-              {[
-                {
-                  group: '① 자격 확인',
-                  items: [
-                    '이번 공고가 중기부인지, 산업부/KOTRA인지 먼저 확인했다',
-                    '우리 회사가 중소기업/중견기업 요건에 맞는지 확인했다',
-                    '수출실적 구간(또는 매출액 구간)과 신청 가능 트랙을 확인했다',
-                    '협약기간 중인 기존 참여 여부를 확인했다',
-                  ],
-                },
-                {
-                  group: '② 서류 준비',
-                  items: [
-                    '중소기업확인서 유효기간을 확인했다',
-                    '수출실적 증빙 서류를 준비했다',
-                    '목록통관 실적이 있으면 별도 수출증명 서류를 준비했다',
-                    '중소기업지원플랫폼으로 제출해야 하는 민원증명 서류를 확인했다',
-                  ],
-                },
-                {
-                  group: '③ 신청 전략',
-                  items: [
-                    '동일공고 내 신청 우선순위를 정했다',
-                    '마감 당일이 아니라 최소 2~3일 전에 제출하기로 했다',
-                    '일부 지역연계형 프로그램의 경우 오프라인 서류 제출 여부도 확인했다',
-                  ],
-                },
-                {
-                  group: '④ 바우처 활용 계획',
-                  items: [
-                    '사용할 서비스 분야(조사/컨설팅, 전시회, 해외영업 등)를 정했다',
-                    '선정 후 바우처 총액 변경이 불가하다는 점을 인지하고 있다',
-                    '부가세(10%)는 기업이 별도 부담해야 한다는 점을 확인했다',
-                  ],
-                },
-              ].map(({ group, items }) => (
-                <div key={group}>
-                  <p className="text-[14px] font-bold text-[#0b1b35] mb-3">{group}</p>
-                  <div className="flex flex-col gap-2">
-                    {items.map((item, i) => (
-                      <div
-                        key={item}
-                        className="flex items-center gap-4 px-5 py-4 bg-[#f8f9fb] rounded-xl text-[15px] text-[#314158]"
-                      >
-                        <span className="shrink-0 w-6 h-6 rounded border-2 border-[#cad5e2] bg-white flex items-center justify-center text-[12px] text-[#99a1af]">
-                          {i + 1}
-                        </span>
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                </div>
               ))}
             </div>
           </section>
