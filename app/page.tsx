@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { fetchServices, getHighlightedServices } from '@/lib/csv'
 import Navbar from '@/components/Navbar'
 import HeroSection from '@/components/landing/HeroSection'

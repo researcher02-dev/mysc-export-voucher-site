@@ -62,15 +62,18 @@ export default function ServiceFilterClient({ services }: ServiceFilterClientPro
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const toggleCountry = (v: string) =>
+  const toggleCountry = (v: string) => {
     setSelectedCountries((p) => p.includes(v) ? p.filter((c) => c !== v) : [...p, v])
     trackEvent('filter_use', { filter_type: 'country', filter_value: v })
-  const toggleIndustry = (v: string) =>
+  }
+  const toggleIndustry = (v: string) => {
     setSelectedIndustries((p) => p.includes(v) ? p.filter((i) => i !== v) : [...p, v])
     trackEvent('filter_use', { filter_type: 'industry', filter_value: v })
-  const toggleSupportType = (v: string) =>
+  }
+  const toggleSupportType = (v: string) => {
     setSelectedSupportTypes((p) => p.includes(v) ? p.filter((t) => t !== v) : [...p, v])
     trackEvent('filter_use', { filter_type: 'support_type', filter_value: v })
+  }
 
   const resetAll = () => {
     setSelectedCountries([])
