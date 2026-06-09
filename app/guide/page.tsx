@@ -181,7 +181,7 @@ export default function GuidePage() {
 
                 {/* 레이어 1: 정부 예산 */}
                 <div className="flex justify-center mb-4">
-                  <div className="bg-[#33c3ff]/15 border border-[#33c3ff]/40 rounded-xl px-8 py-4 text-center w-full max-w-[500px]">
+                  <div className="bg-[#162d4e] border border-[#33c3ff]/40 rounded-xl px-8 py-4 text-center w-full max-w-[500px]">
                     <p className="text-[11px] text-[#33c3ff] font-bold tracking-[1px] uppercase mb-1">정부 수출지원 예산</p>
                     <p className="text-white text-[15px] font-bold">중기부 · 산업부 · 지자체 등 예산 편성</p>
                     <p className="text-[#cad5e2] text-[12px] mt-1">부처 및 지역별로 사업 설계 · 공고</p>
@@ -197,7 +197,7 @@ export default function GuidePage() {
                     { track: '중기부 트랙', org: '운영: 중진공', sub: '수출실적 구간별 5단계' },
                     { track: '산업부/KOTRA 트랙', org: '운영: KOTRA', sub: '업종·분야별 세부 사업' },
                   ].map(({ track, org, sub }) => (
-                    <div key={track} className="bg-white/10 border border-white/20 rounded-xl p-4 text-center">
+                    <div key={track} className="bg-[#162d4e] border border-white/20 rounded-xl p-4 text-center">
                       <p className="text-[12px] text-[#33c3ff] font-bold mb-2">{track}</p>
                       <p className="text-white text-[12px] font-medium">{org}</p>
                       <p className="text-[#cad5e2] text-[11px] mt-1 leading-[1.5]">{sub}</p>
@@ -205,7 +205,7 @@ export default function GuidePage() {
                   ))}
                 </div>
                 {/* 트랙 설명 */}
-                <div className="bg-white/5 border border-white/10 rounded-xl px-5 py-3 mb-4 max-w-[460px] mx-auto w-full">
+                <div className="bg-[#162d4e] border border-white/10 rounded-xl px-5 py-3 mb-4 max-w-[460px] mx-auto w-full">
                   <p className="text-[11px] text-[#cad5e2] leading-[1.7] text-center">
                     <span className="text-white font-bold">트랙</span>은 신청 자격 요건과 운영기관이 달라지는 구분입니다.
                     <br />어느 트랙이든 <span className="text-[#33c3ff] font-bold">서비스 메뉴판은 동일하게 이용 가능</span>합니다.
@@ -216,14 +216,14 @@ export default function GuidePage() {
                 </div>
 
                 {/* 레이어 3: 바우처 구성 */}
-                <div className="bg-white/5 border border-white/10 rounded-xl p-5 mb-4">
+                <div className="bg-[#162d4e] border border-white/10 rounded-xl p-5 mb-4">
                   <p className="text-[12px] font-bold text-[#33c3ff] mb-3 text-center">바우처 구성 (기업 규모별 차등)</p>
                   <div className="flex gap-2 items-stretch">
                     <div className="flex-[65] bg-[#33c3ff]/20 border border-[#33c3ff]/30 rounded-lg p-3 text-center">
                       <p className="text-[13px] text-[#33c3ff] font-bold">정부 지원 50~70%</p>
                       <p className="text-[11px] text-[#cad5e2] mt-1">국고보조금</p>
                     </div>
-                    <div className="flex-[35] bg-white/10 border border-white/20 rounded-lg p-3 text-center">
+                    <div className="flex-[35] bg-[#2d3b52] border border-white/20 rounded-lg p-3 text-center">
                       <p className="text-[13px] text-white font-bold">기업 30~50%</p>
                       <p className="text-[11px] text-[#cad5e2] mt-1">자부담</p>
                     </div>
@@ -248,7 +248,7 @@ export default function GuidePage() {
                     'arrow' in item ? (
                       <span key={i} className="text-[#33c3ff] text-[18px] hidden sm:block">→</span>
                     ) : (
-                      <div key={i} className="bg-white/10 border border-white/20 rounded-xl px-3 py-3 min-w-[90px]">
+                      <div key={i} className="bg-[#162d4e] border border-white/20 rounded-xl px-3 py-3 min-w-[90px]">
                         <p className="text-white text-[13px] font-bold">{item.label}</p>
                         <p className="text-[#cad5e2] text-[10px] mt-1 leading-[1.5]">{item.sub1}</p>
                         <p className="text-[#cad5e2] text-[10px] leading-[1.5]">{item.sub2}</p>
