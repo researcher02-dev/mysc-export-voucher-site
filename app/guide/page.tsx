@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
-import GuideCta from './GuideCta'
 
 export const metadata: Metadata = {
   title: '수출바우처 신청방법 총정리 | 대상·서류·선정기준·전시회 활용 — MYSC',
@@ -100,19 +99,9 @@ export default function GuidePage() {
           <h1 className="text-[40px] sm:text-[52px] font-black text-white leading-[1.15] tracking-[-2px]">
             수출바우처 신청 안내 페이지
           </h1>
-          <p className="text-[18px] sm:text-[20px] font-medium text-[#cad5e2] leading-[1.65] max-w-[680px]">
-            전반적인 사업 운영 구조 및 지원 대상, 받을 수 있는 혜택 등을 종합적으로 정리했습니다.
+          <p className="text-[17px] sm:text-[18px] font-medium text-[#cad5e2] leading-[1.65] tracking-normal max-w-[820px] sm:whitespace-nowrap">
+            사업 운영 구조 및 지원 대상, 받을 수 있는 혜택 등을 종합적으로 정리했습니다.
           </p>
-
-          <div className="mt-4 flex flex-col sm:flex-row gap-3 items-center">
-            <GuideCta label="수출바우처 서비스 상담받기" source="guide_hero" />
-            <Link
-              href="/services"
-              className="inline-flex items-center justify-center h-[52px] px-10 rounded-full border border-white/30 text-white text-[16px] font-bold tracking-[-0.4px] hover:bg-white/10 transition-colors"
-            >
-              서비스 목록 보기
-            </Link>
-          </div>
         </div>
       </section>
 
@@ -188,7 +177,7 @@ export default function GuidePage() {
             {/* 시각화 B: 자금 구조 흐름도 */}
             <div className="mt-8">
               <p className="text-[14px] font-bold text-[#0b1b35] mb-4">바우처 자금은 어떻게 구성되나요?</p>
-              <div className="bg-[#0b1b35] rounded-2xl p-6 sm:p-8">
+              <div className="bg-[#d6f2ff] rounded-2xl p-6 sm:p-8">
 
                 {/* 레이어 1: 정부 예산 */}
                 <div className="flex justify-center mb-4">
@@ -638,21 +627,19 @@ export default function GuidePage() {
       <section className="bg-[#0b1b35]">
         <div className="max-w-[900px] mx-auto px-5 sm:px-10 xl:px-0 py-24 flex flex-col items-center gap-5 text-center">
           <h2 className="text-[32px] sm:text-[40px] font-bold text-white leading-[1.3] tracking-[-1.5px]">
-            공고문 기준으로 필요한 서류와<br className="hidden sm:block" />
-            적용 가능한 서비스 범위를 함께 점검해드립니다.
+            수출바우처로 활용할 서비스를 찾고 계신가요?
           </h2>
           <p className="text-[17px] font-medium text-[#cad5e2] leading-[1.75] max-w-[540px]">
-            바우처 신청 전, 우리 기업이 어떤 메뉴로 활용할 수 있는지 MYSC와 함께 검토해보세요.
+            이미 바우처에 선정되었거나 활용 가능한 메뉴를 검토 중이라면,
+            <br className="hidden sm:block" />
+            서비스 찾기 페이지에서 국가·산업·지원유형별 MYSC 등록 메뉴를 확인해보세요.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 mt-4">
-            <GuideCta label="상담 문의하기" source="guide_bottom_cta" className="h-[60px] px-12 text-[18px]" />
-            <Link
-              href="/services"
-              className="inline-flex items-center justify-center h-[60px] px-12 rounded-full border border-white/30 text-white text-[18px] font-bold hover:bg-white/10 transition-colors"
-            >
-              서비스 목록 보기
-            </Link>
-          </div>
+          <Link
+            href="/services"
+            className="mt-4 inline-flex items-center justify-center h-[60px] px-12 rounded-full bg-[#33c3ff] text-white text-[18px] font-bold hover:bg-[#1ab0ed] transition-colors"
+          >
+            서비스 찾기 페이지로 이동
+          </Link>
         </div>
       </section>
     </div>
