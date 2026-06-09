@@ -21,7 +21,8 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko" className={`${notoSansKR.variable} antialiased`}>
-      <head>
+      <body className="min-h-screen flex flex-col">
+        {children}
         {/* GA4 */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-YS4E7TNYDC"
@@ -37,8 +38,7 @@ export default function RootLayout({
           src="https://tally.so/widgets/embed.js"
           strategy="lazyOnload"
         />
-      </head>
-      <body className="min-h-screen flex flex-col">{children}</body>
+      </body>
     </html>
   )
 }

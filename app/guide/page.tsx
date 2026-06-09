@@ -82,6 +82,54 @@ function WarnBox({ children }: { children: React.ReactNode }) {
 
 // ── Page ──────────────────────────────────────────────────────────────────
 
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '수출실적이 없어도 수출바우처를 신청할 수 있나요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '일부 공고는 내수기업 또는 전년도 수출액 1,000불 미만 구간을 별도로 두고 있습니다. "수출실적이 없으면 무조건 불가"가 아니므로, 차수별 공고에서 해당 구간 신청 가능 여부를 직접 확인하세요.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '작년에 수출바우처에 선정된 기업도 다시 신청할 수 있나요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '협약기간이 종료되지 않은 참여기업은 협약기간 내 모집 사업에 중복 참여할 수 없습니다. 협약기간이 끝났다면 재신청 가능하며, 차수별 예외조건이 있을 수 있으니 공고를 확인하세요.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '전시회 참가도 수출바우처로 지원받을 수 있나요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '가능합니다. 공식 서비스 메뉴판에 "전시회/행사/해외영업지원" 대분류가 포함되어 있습니다. 해외전시회 개별참가, CES·MWC 같은 주요 전시회도 이 메뉴에 해당합니다. 단, 타 기관에서 동일 전시회 비용을 지원받은 경우 중복 정산은 불가합니다.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '수출바우처 사용계획서는 나중에 수정할 수 있나요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '세부 내용은 사업종료일까지 수정 가능하지만, 변경 전 운영기관 담당자와 사전 공유 및 승인이 필요합니다. 최초 제출 이후 바우처 총액 자체는 수정할 수 없습니다.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '수출바우처 정산은 어떻게 진행되나요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '서비스 완료 후 수행기관이 결과보고서와 정산서류를 제출하면, 운영기관의 검토 및 승인 절차를 거쳐 정산이 진행됩니다. 부가세(10%)는 바우처로 지원되지 않아 기업이 수행기관에 별도로 납부해야 합니다.',
+      },
+    },
+  ],
+}
+
 export default function GuidePage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
