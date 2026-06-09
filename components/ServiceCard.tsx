@@ -1,6 +1,7 @@
 import type { Service } from '@/types/service'
 import TagChip from './TagChip'
 import KeywordTag from './KeywordTag'
+import { trackEvent } from '@/lib/ga'
 
 interface ServiceCardProps {
   service: Service
@@ -59,6 +60,7 @@ export default function ServiceCard({ service, onOpenDrawer }: ServiceCardProps)
             href={service.application_url}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackEvent('apply_click', { service_name: service.service_name })}
             className="w-full h-[52px] flex items-center justify-center rounded-full bg-[#33c3ff] text-white text-[16px] font-bold text-center cursor-pointer hover:bg-[#1ab0ed] transition-colors"
           >
             신청 페이지 바로가기
@@ -74,7 +76,7 @@ export default function ServiceCard({ service, onOpenDrawer }: ServiceCardProps)
 
         {/* Secondary: 자세히 보기 */}
         <button
-          onClick={onOpenDrawer}
+          onClick={() => { onOpenDrawer(); trackEvent('detail_view', { service_name: service.service_name }) }}
           className="w-full h-[52px] flex items-center justify-center rounded-full bg-[rgba(51,195,255,0.1)] text-[#33c3ff] text-[16px] font-bold text-center cursor-pointer hover:bg-[rgba(51,195,255,0.18)] transition-colors"
         >
           자세히 보기

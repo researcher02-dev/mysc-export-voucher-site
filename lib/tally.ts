@@ -1,4 +1,5 @@
 'use client'
+import { trackEvent } from '@/lib/ga'
 
 const TALLY_FORM_ID = 'EkDj8X'
 
@@ -18,6 +19,7 @@ declare global {
 
 export function openTally(hiddenFields: Record<string, string> = {}) {
   if (typeof window === 'undefined') return
+  trackEvent('contact_click', { source: hiddenFields.source_page ?? 'unknown' })
 
   const options = { ...BASE_OPTIONS, hiddenFields }
 

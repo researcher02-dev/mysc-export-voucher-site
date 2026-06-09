@@ -5,6 +5,7 @@ import type { Service } from '@/types/service'
 import TagChip from './TagChip'
 import KeywordTag from './KeywordTag'
 import { openTallyFromDrawer } from '@/lib/tally'
+import { trackEvent } from '@/lib/ga'
 
 interface ServiceDrawerProps {
   service: Service | null
@@ -222,6 +223,7 @@ export default function ServiceDrawer({ service, onClose }: ServiceDrawerProps) 
               href={service.application_url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackEvent('apply_click', { service_name: service.service_name })}
               className="w-full h-14 flex items-center justify-center rounded-full bg-[#33c3ff] text-white text-[16px] font-bold cursor-pointer hover:bg-[#1ab0ed] transition-colors"
             >
               신청 페이지 바로가기

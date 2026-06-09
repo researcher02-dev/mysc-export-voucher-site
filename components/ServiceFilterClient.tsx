@@ -14,6 +14,7 @@ import {
 import ServiceCard from './ServiceCard'
 import ServiceDrawer from './ServiceDrawer'
 import { openTallyGeneral } from '@/lib/tally'
+import { trackEvent } from '@/lib/ga'
 
 interface ServiceFilterClientProps {
   services: Service[]
@@ -63,10 +64,13 @@ export default function ServiceFilterClient({ services }: ServiceFilterClientPro
 
   const toggleCountry = (v: string) =>
     setSelectedCountries((p) => p.includes(v) ? p.filter((c) => c !== v) : [...p, v])
+    trackEvent('filter_use', { filter_type: 'country', filter_value: v })
   const toggleIndustry = (v: string) =>
     setSelectedIndustries((p) => p.includes(v) ? p.filter((i) => i !== v) : [...p, v])
+    trackEvent('filter_use', { filter_type: 'industry', filter_value: v })
   const toggleSupportType = (v: string) =>
     setSelectedSupportTypes((p) => p.includes(v) ? p.filter((t) => t !== v) : [...p, v])
+    trackEvent('filter_use', { filter_type: 'support_type', filter_value: v })
 
   const resetAll = () => {
     setSelectedCountries([])

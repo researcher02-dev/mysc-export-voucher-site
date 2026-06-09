@@ -22,6 +22,17 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`${notoSansKR.variable} antialiased`}>
       <head>
+        {/* GA4 */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-YS4E7TNYDC"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YS4E7TNYDC');
+        `}</Script>
         <Script
           src="https://tally.so/widgets/embed.js"
           strategy="lazyOnload"
