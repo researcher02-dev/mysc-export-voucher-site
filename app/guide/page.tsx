@@ -194,8 +194,8 @@ export default function GuidePage() {
                 {/* 레이어 2: 2개 트랙 */}
                 <div className="grid grid-cols-2 gap-3 mb-4 max-w-[460px] mx-auto w-full">
                   {[
-                    { track: '중기부 트랙', org: '운영: 중진공', sub: '수출실적 구간별 5단계' },
-                    { track: '산업부/KOTRA 트랙', org: '운영: KOTRA', sub: '업종·분야별 세부 사업' },
+                    { track: '중기부 사업유형', org: '운영: 중진공', sub: '수출실적 구간별 5단계' },
+                    { track: '산업부·KOTRA 사업유형', org: '운영: KOTRA', sub: '업종·분야별 세부 사업' },
                   ].map(({ track, org, sub }) => (
                     <div key={track} className="bg-[#162d4e] border border-white/20 rounded-xl p-4 text-center">
                       <p className="text-[12px] text-[#33c3ff] font-bold mb-2">{track}</p>
@@ -207,8 +207,9 @@ export default function GuidePage() {
                 {/* 트랙 설명 */}
                 <div className="bg-[#162d4e] border border-white/10 rounded-xl px-5 py-3 mb-4 max-w-[460px] mx-auto w-full">
                   <p className="text-[11px] text-[#cad5e2] leading-[1.7] text-center">
-                    <span className="text-white font-bold">트랙</span>은 신청 자격 요건과 운영기관이 달라지는 구분입니다.
-                    <br />어느 트랙이든 <span className="text-[#33c3ff] font-bold">서비스 메뉴판은 동일하게 이용 가능</span>합니다.
+                    사업유형별로 신청 자격·선정 기준·운영기관이 다를 수 있습니다.
+                    <br />
+                    선정 이후에는 서비스 메뉴판에서 필요한 서비스를 선택해 이용할 수 있습니다.
                   </p>
                 </div>
                 <div className="flex justify-center mb-4">
